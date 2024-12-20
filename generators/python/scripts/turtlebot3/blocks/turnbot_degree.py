@@ -1,5 +1,5 @@
 def turnbot_degree(clockwise, degreeAngle, speed):
-    twist = geometry_msgs.Twist()
+    twist = geometry_msgs.msg.Twist()
 
     listener = tf.TransformListener()
 
@@ -45,6 +45,7 @@ def turnbot_degree(clockwise, degreeAngle, speed):
         except (tf.Exception, tf.ConnectivityException, tf.LookupException):
             rospy.loginfo("Cannot find transform between /odom and /base_link or /base_footprint")
             rospy.signal_shutdown("tf Exception")
+            return "no base_frame"
 
     rotation = get_odomRotate(listener, odom_frame, base_frame)
 
@@ -81,7 +82,7 @@ def turnbot_degree(clockwise, degreeAngle, speed):
         velocity_pub.publish(twist)
         rate.sleep()
 
-    twist = geometry_msgs.Twist()
+    twist = geometry_msgs.msg.Twist()
     twist.angular.z = 0.00
     velocity_pub.publish(twist)
     rate.sleep()
